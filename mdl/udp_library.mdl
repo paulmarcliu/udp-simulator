@@ -1,40 +1,31 @@
-Model {
-  Name			  "udptest"
+Library {
+  Name			  "udp_library"
   Version		  7.5
   MdlSubVersion		  0
-  GraphicalInterface {
-    NumRootInports	    0
-    NumRootOutports	    0
-    ParameterArgumentNames  ""
-    ComputedModelVersion    "1.103"
-    NumModelReferences	    0
-    NumTestPointedSignals   0
-  }
   SavedCharacterEncoding  "windows-1252"
+  LibraryType		  "BlockLibrary"
   SaveDefaultBlockParams  on
   ScopeRefreshTime	  0.035000
   OverrideScopeRefreshTime on
   DisableAllScopes	  off
-  DataTypeOverride	  "UseLocalSettings"
-  MinMaxOverflowLogging	  "UseLocalSettings"
-  MinMaxOverflowArchiveMode "Overwrite"
   MaxMDLFileLineLength	  120
-  Created		  "Thu Oct 10 12:00:09 2013"
+  InitFcn		  "updateAnnotation.m"
+  Created		  "Sun Oct 27 19:39:59 2013"
   Creator		  "paul"
   UpdateHistory		  "UpdateHistoryNever"
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "paul.liu"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Aug 16 15:27:50 2017"
-  RTWModifiedTimeStamp	  424798066
-  ModelVersionFormat	  "1.%<AutoIncrement:103>"
+  LastModifiedDate	  "Wed Aug 16 14:36:53 2017"
+  RTWModifiedTimeStamp	  424795006
+  ModelVersionFormat	  "1.%<AutoIncrement:27>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
-  LibraryLinkDisplay	  "none"
+  LibraryLinkDisplay	  "all"
   WideLines		  off
   ShowLineDimensions	  off
-  ShowPortDataTypes	  on
+  ShowPortDataTypes	  off
   ShowLoopsOnError	  on
   IgnoreBidirectionalLines off
   ShowStorageClass	  off
@@ -45,7 +36,7 @@ Model {
   ExecutionContextIcon	  off
   ShowLinearizationAnnotations on
   BlockNameDataTip	  off
-  BlockParametersDataTip  on
+  BlockParametersDataTip  off
   BlockDescriptionStringDataTip	off
   ToolBar		  on
   StatusBar		  on
@@ -55,12 +46,7 @@ Model {
   LinearizationMsg	  "none"
   Profile		  off
   ParamWorkspaceSource	  "MATLABWorkspace"
-  AccelSystemTargetFile	  "accel.tlc"
-  AccelTemplateMakefile	  "accel_default_tmf"
-  AccelMakeCommand	  "make_rtw"
-  TryForcingSFcnDF	  off
   RecordCoverage	  off
-  CovPath		  "/"
   CovSaveName		  "covdata"
   CovMetricSettings	  "dw"
   CovNameIncrementing	  off
@@ -68,7 +54,6 @@ Model {
   CovForceBlockReductionOff on
   covSaveCumulativeToWorkspaceVar on
   CovSaveSingleToWorkspaceVar on
-  CovCumulativeVarName	  "covCumulativeData"
   CovCumulativeReport	  off
   CovReportOnPause	  on
   CovModelRefEnable	  "Off"
@@ -94,7 +79,6 @@ Model {
   ExtModeSkipDownloadWhenConnect off
   ExtModeLogAll		  on
   ExtModeAutoUpdateStatusClock on
-  BufferReuse		  on
   ShowModelReferenceBlockVersion off
   ShowModelReferenceBlockIO off
   Array {
@@ -110,9 +94,9 @@ Model {
 	  $ObjectID		  2
 	  Version		  "1.10.0"
 	  StartTime		  "0.0"
-	  StopTime		  "5"
+	  StopTime		  "10.0"
 	  AbsTol		  "auto"
-	  FixedStep		  "1"
+	  FixedStep		  "auto"
 	  InitialStep		  "auto"
 	  MaxNumMinSteps	  "-1"
 	  MaxOrder		  5
@@ -125,9 +109,9 @@ Model {
 	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
 	  RelTol		  "1e-3"
-	  SolverMode		  "SingleTasking"
-	  Solver		  "FixedStepDiscrete"
-	  SolverName		  "FixedStepDiscrete"
+	  SolverMode		  "Auto"
+	  Solver		  "ode45"
+	  SolverName		  "ode45"
 	  SolverJacobianMethodControl "auto"
 	  ShapePreserveControl	  "DisableAll"
 	  ZeroCrossControl	  "UseLocalSettings"
@@ -173,6 +157,19 @@ Model {
 	Simulink.OptimizationCC {
 	  $ObjectID		  4
 	  Version		  "1.10.0"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "BooleansAsBitfields"
+	    Cell		    "PassReuseOutputArgsAs"
+	    Cell		    "PassReuseOutputArgsThreshold"
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    Cell		    "UseSpecifiedMinMax"
+	    PropName		    "DisabledProps"
+	  }
 	  BlockReduction	  on
 	  BooleanDataType	  on
 	  ConditionallyExecuteInputs on
@@ -204,8 +201,8 @@ Model {
 	  NoFixptDivByZeroProtection off
 	  EfficientFloat2IntCast  off
 	  EfficientMapNaN2IntZero on
-	  OptimizeModelRefInitCode on
-	  LifeSpan		  "1"
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
 	  MaxStackSize		  "Inherit from target"
 	  BufferReusableBoundary  on
 	  SimCompilerOptimization "Off"
@@ -237,7 +234,7 @@ Model {
 	  TimeAdjustmentMsg	  "none"
 	  MaxConsecutiveZCsMsg	  "error"
 	  SolverPrmCheckMsg	  "warning"
-	  InheritedTsInSrcMsg	  "none"
+	  InheritedTsInSrcMsg	  "warning"
 	  DiscreteInheritContinuousMsg "warning"
 	  MultiTaskDSMMsg	  "error"
 	  MultiTaskCondExecSysMsg "error"
@@ -345,12 +342,24 @@ Model {
 	  $BackupClass		  "Simulink.RTWCC"
 	  $ObjectID		  9
 	  Version		  "1.10.0"
-	  SystemTargetFile	  "ert.tlc"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    8
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    Cell		    "GenerateSLWebview"
+	    Cell		    "GenerateCodeMetricsReport"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
 	  GenCodeOnly		  off
 	  MakeCommand		  "make_rtw"
 	  GenerateMakefile	  on
-	  TemplateMakefile	  "ert_default_tmf"
-	  Description		  "Real-Time Workshop Embedded Coder"
+	  TemplateMakefile	  "grt_default_tmf"
 	  GenerateReport	  off
 	  SaveLog		  off
 	  RTWVerbose		  on
@@ -361,7 +370,6 @@ Model {
 	  TLCAssert		  off
 	  ProcessScriptMode	  "Default"
 	  ConfigurationMode	  "Optimized"
-	  ProcessScript		  "ert_make_rtw_hook"
 	  ConfigAtBuild		  off
 	  RTWUseLocalCustomCode	  off
 	  RTWUseSimCustomCode	  off
@@ -385,9 +393,35 @@ Model {
 	    Simulink.CodeAppCC {
 	      $ObjectID		      10
 	      Version		      "1.10.0"
+	      Array {
+		Type			"Cell"
+		Dimension		21
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"InsertPolySpaceComments"
+		Cell			"SFDataObjDesc"
+		Cell			"MATLABFcnDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrFcnArg"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		Cell			"ReqsInCode"
+		PropName		"DisabledProps"
+	      }
 	      ForceParamTrailComments off
 	      GenerateComments	      on
-	      IgnoreCustomStorageClasses off
+	      IgnoreCustomStorageClasses on
 	      IgnoreTestpoints	      off
 	      IncHierarchyInIds	      off
 	      MaxIdLength	      31
@@ -417,10 +451,31 @@ Model {
 	      ReqsInCode	      off
 	      UseSimReservedNames     off
 	    }
-	    Simulink.ERTTargetCC {
+	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
 	      $ObjectID		      11
 	      Version		      "1.10.0"
+	      Array {
+		Type			"Cell"
+		Dimension		16
+		Cell			"GeneratePreprocessorConditionals"
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"CombineOutputUpdateFcns"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"CPPClassGenCompliant"
+		Cell			"MultiInstanceERTCode"
+		Cell			"PurelyIntegerCode"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		Cell			"SupportNonInlinedSFcns"
+		Cell			"PortableWordSizes"
+		PropName		"DisabledProps"
+	      }
 	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
 	      TargetLibSuffix	      ""
 	      TargetPreCompLibLocation ""
@@ -431,98 +486,47 @@ Model {
 	      ERTMultiwordLength      256
 	      MultiwordLength	      2048
 	      GenerateFullHeader      on
-	      GenerateSampleERTMain   on
+	      GenerateSampleERTMain   off
 	      GenerateTestInterfaces  off
 	      IsPILTarget	      off
 	      ModelReferenceCompliant on
 	      ParMdlRefBuildCompliant on
 	      CompOptLevelCompliant   on
 	      IncludeMdlTerminateFcn  on
-	      GeneratePreprocessorConditionals "Use local settings"
-	      CombineOutputUpdateFcns on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns off
 	      SuppressErrorStatus     off
-	      ERTFirstTimeCompliant   on
+	      ERTFirstTimeCompliant   off
 	      IncludeFileDelimiter    "Auto"
-	      ERTCustomFileBanners    on
+	      ERTCustomFileBanners    off
 	      SupportAbsoluteTime     on
 	      LogVarNameModifier      "rt_"
-	      MatFileLogging	      off
+	      MatFileLogging	      on
 	      MultiInstanceERTCode    off
 	      SupportNonFinite	      on
 	      SupportComplex	      on
 	      PurelyIntegerCode	      off
-	      SupportContinuousTime   off
+	      SupportContinuousTime   on
 	      SupportNonInlinedSFcns  on
 	      SupportVariableSizeSignals off
 	      EnableShiftOperators    on
 	      ParenthesesLevel	      "Nominal"
 	      PortableWordSizes	      off
-	      ModelStepFunctionPrototypeControlCompliant on
-	      CPPClassGenCompliant    on
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    off
 	      AutosarCompliant	      off
-	      GenerateErtSFunction    off
-	      GenerateASAP2	      off
+	      UseMalloc		      off
 	      ExtMode		      off
-	      ExtModeTransport	      0
 	      ExtModeStaticAlloc      off
-	      ExtModeStaticAllocSize  1000000
 	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
 	      ExtModeMexFile	      "ext_comm"
 	      ExtModeIntrfLevel	      "Level1"
-	      InlinedParameterPlacement	"Hierarchical"
-	      TargetOS		      "BareBoardExample"
-	      MultiInstanceErrorCode  "Error"
-	      RateGroupingCode	      on
-	      RootIOFormat	      "Individual arguments"
 	      RTWCAPISignals	      off
 	      RTWCAPIParams	      off
 	      RTWCAPIStates	      off
-	      ERTSrcFileBannerTemplate "ert_code_template.cgt"
-	      ERTHdrFileBannerTemplate "ert_code_template.cgt"
-	      ERTDataSrcFileTemplate  "ert_code_template.cgt"
-	      ERTDataHdrFileTemplate  "ert_code_template.cgt"
-	      ERTCustomFileTemplate   "example_file_process.tlc"
-	      CoverageDialogOpen      "off"
-	      ModuleNamingRule	      "Unspecified"
-	      SignalDisplayLevel      10
-	      ParamTuneLevel	      10
-	      GlobalDataDefinition    "Auto"
-	      DataDefinitionFile      "global.c"
-	      GlobalDataReference     "Auto"
-	      ERTFilePackagingFormat  "Modular"
-	      DataReferenceFile	      "global.h"
-	      GRTInterface	      off
-	      PreserveExpressionOrder off
-	      PreserveIfCondition     off
-	      ConvertIfToSwitch	      off
-	      PreserveExternInFcnDecls on
-	      EnableUserReplacementTypes off
-	      Array {
-		Type			"Struct"
-		Dimension		1
-		MATStruct {
-		  double		  ""
-		  single		  ""
-		  int32			  ""
-		  int16			  ""
-		  int8			  ""
-		  uint32		  ""
-		  uint16		  ""
-		  uint8			  ""
-		  boolean		  ""
-		  int			  ""
-		  uint			  ""
-		  char			  ""
-		}
-		PropName		"ReplacementTypes"
-	      }
-	      MemSecPackage	      "--- None ---"
-	      MemSecDataConstants     "Default"
-	      MemSecDataIO	      "Default"
-	      MemSecDataInternal      "Default"
-	      MemSecDataParameters    "Default"
-	      MemSecFuncInitTerm      "Default"
-	      MemSecFuncExecute	      "Default"
+	      GenerateASAP2	      off
 	    }
 	    PropName		    "Components"
 	  }
@@ -530,15 +534,10 @@ Model {
 	PropName		"Components"
       }
       Name		      "Configuration"
-      ExtraOptions	      "-aGenerateTraceInfo=0 -aIgnoreTestpoints=0 "
-      CurrentDlgPage	      "Diagnostics/Sample Time"
-      ConfigPrmDlgPosition    " [ 315, 93, 1342, 708 ] "
+      CurrentDlgPage	      "Solver"
+      ConfigPrmDlgPosition    " [ 520, 225, 1400, 855 ] "
     }
     PropName		    "ConfigurationSets"
-  }
-  Simulink.ConfigSet {
-    $PropName		    "ActiveConfigurationSet"
-    $ObjectID		    1
   }
   BlockDefaults {
     ForegroundColor	    "black"
@@ -573,30 +572,14 @@ Model {
   }
   BlockParameterDefaults {
     Block {
-      BlockType		      Constant
-      Value		      "1"
-      VectorParams1D	      on
-      SamplingMode	      "Sample based"
-      OutMin		      "[]"
-      OutMax		      "[]"
-      OutDataTypeMode	      "Inherit from 'Constant value'"
-      OutDataType	      "fixdt(1,16,0)"
-      ConRadixGroup	      "Use specified scaling"
-      OutScaling	      "[]"
-      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
-      LockScale		      off
-      SampleTime	      "inf"
-      FramePeriod	      "inf"
-      PreserveConstantTs      off
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      ReadBeforeWriteMsg      "none"
-      WriteAfterWriteMsg      "none"
-      WriteAfterReadMsg	      "none"
-      InitialValue	      "0"
-      StateMustResolveToSignalObject off
-      ShowAdditionalParam     off
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
       OutMin		      "[]"
       OutMax		      "[]"
       DataType		      "auto"
@@ -605,31 +588,63 @@ Model {
       OutDataTypeStr	      "Inherit: auto"
       LockScale		      off
       SignalType	      "auto"
-      DataLogging	      off
-      DataLoggingLimitDataPoints off
-      DataLoggingMaxPoints    "5000"
-      DataLoggingDecimateData off
-      DataLoggingDecimation   "2"
-      DataLoggingNameMode     "SignalName"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchInputForFeedbackSignals off
+      Interpolate	      on
     }
     Block {
-      BlockType		      DataStoreRead
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      DataType		      "auto"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
     }
     Block {
-      BlockType		      DataStoreWrite
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
     }
     Block {
-      BlockType		      ToWorkspace
-      VariableName	      "simulink_output"
-      MaxDataPoints	      "1000"
-      Decimation	      "1"
-      SampleTime	      "0"
-      FixptAsFi		      off
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
     }
   }
   System {
-    Name		    "udptest"
-    Location		    [46, 121, 1314, 718]
+    Name		    "udp_library"
+    Location		    [1968, 210, 2514, 460]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -643,357 +658,399 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    194
+    SIDHighWatermark	    127
     Block {
-      BlockType		      Constant
-      Name		      "Constant1"
-      SID		      120
-      Position		      [330, 415, 360, 445]
-      Value		      "256"
-      OutDataTypeMode	      "uint32"
-      OutDataTypeStr	      "uint32"
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      Name		      "Data Store\nMemory"
-      SID		      163
-      Position		      [800, 15, 962, 57]
-      DataStoreName	      "SocketDescriptor"
-      ReadBeforeWriteMsg      "warning"
-      WriteAfterWriteMsg      "warning"
-      WriteAfterReadMsg	      "warning"
-      RTWStateStorageClass    "Auto"
-      VectorParams1D	      on
-      DataType		      "uint32"
-      OutDataType	      "fixdt(1, 16)"
-      OutScaling	      "2^0"
-      OutDataTypeStr	      "uint32"
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      Name		      "Data Store\nMemory1"
-      SID		      135
-      Position		      [996, 85, 1112, 120]
-      DataStoreName	      "UDP_Write_Buffer"
-      ReadBeforeWriteMsg      "warning"
-      WriteAfterWriteMsg      "warning"
-      WriteAfterReadMsg	      "warning"
-      InitialValue	      "[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-      " 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
-      RTWStateStorageClass    "Auto"
-      VectorParams1D	      on
-      DataType		      "uint32"
-      OutDataTypeStr	      "uint32"
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      Name		      "Data Store\nMemory2"
-      SID		      165
-      Position		      [980, 15, 1142, 57]
-      DataStoreName	      "SocketStatus"
-      ReadBeforeWriteMsg      "warning"
-      WriteAfterWriteMsg      "warning"
-      WriteAfterReadMsg	      "warning"
-      RTWStateStorageClass    "Auto"
-      VectorParams1D	      on
-      DataType		      "int32"
-      OutDataType	      "fixdt(1, 16)"
-      OutScaling	      "2^0"
-      OutDataTypeStr	      "int32"
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      Name		      "Data Store\nMemory3"
-      SID		      137
-      Position		      [656, 20, 772, 55]
-      DataStoreName	      "UDP_Read_Buffer"
-      ReadBeforeWriteMsg      "warning"
-      WriteAfterWriteMsg      "warning"
-      WriteAfterReadMsg	      "warning"
-      InitialValue	      "[1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6"
-      " 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4]"
-      RTWStateStorageClass    "Auto"
-      VectorParams1D	      on
-      DataType		      "uint32"
-      OutDataTypeStr	      "uint32"
-    }
-    Block {
-      BlockType		      DataStoreMemory
-      Name		      "Data Store\nMemory4"
-      SID		      168
-      Position		      [800, 85, 962, 127]
-      DataStoreName	      "destinationAddress"
-      ReadBeforeWriteMsg      "warning"
-      WriteAfterWriteMsg      "warning"
-      WriteAfterReadMsg	      "warning"
-      RTWStateStorageClass    "Auto"
-      VectorParams1D	      on
-      DataType		      "uint32"
-      OutDataType	      "fixdt(1, 16)"
-      OutScaling	      "2^0"
-      OutDataTypeStr	      "uint32"
-    }
-    Block {
-      BlockType		      DataStoreRead
-      Name		      "Data Store\nRead"
-      SID		      40
-      Position		      [340, 219, 420, 251]
-      DataStoreName	      "UDP_Read_Buffer"
-      SampleTime	      "-1"
-      Port {
-	PortNumber		1
-	Name			"input"
-	RTWStorageClass		"Auto"
-	DataLoggingNameMode	"SignalName"
-      }
-    }
-    Block {
-      BlockType		      DataStoreRead
-      Name		      "Data Store\nRead1"
-      SID		      177
-      Position		      [505, 255, 615, 295]
-      DataStoreName	      "SocketDescriptor"
-      SampleTime	      "0"
-    }
-    Block {
-      BlockType		      DataStoreRead
-      Name		      "Data Store\nRead2"
-      SID		      178
-      Position		      [495, 325, 600, 365]
-      DataStoreName	      "destinationAddress"
-      SampleTime	      "0"
-    }
-    Block {
-      BlockType		      DataStoreWrite
-      Name		      "Data Store\nWrite"
-      SID		      179
-      Position		      [925, 371, 1040, 409]
-      DataStoreName	      "UDP_Write_Buffer"
-      SampleTime	      "-1"
-    }
-    Block {
-      BlockType		      DataStoreWrite
-      Name		      "Data Store\nWrite1"
-      SID		      164
-      Position		      [335, 129, 445, 161]
-      DataStoreName	      "SocketDescriptor"
-      SampleTime	      "-1"
-    }
-    Block {
-      BlockType		      DataStoreWrite
-      Name		      "Data Store\nWrite2"
-      SID		      166
-      Position		      [45, 414, 155, 446]
-      DataStoreName	      "SocketStatus"
-      SampleTime	      "-1"
-    }
-    Block {
-      BlockType		      DataStoreWrite
-      Name		      "Data Store\nWrite3"
-      SID		      169
-      Position		      [190, 139, 300, 171]
-      DataStoreName	      "destinationAddress"
-      SampleTime	      "-1"
-    }
-    Block {
-      BlockType		      ToWorkspace
-      Name		      "To Workspace"
-      SID		      181
-      Ports		      [1]
-      Position		      [925, 435, 985, 465]
-      VariableName	      "simout"
-      MaxDataPoints	      "inf"
-      SampleTime	      "-1"
-      SaveFormat	      "Structure"
-    }
-    Block {
-      BlockType		      ToWorkspace
-      Name		      "To Workspace1"
-      SID		      182
-      Ports		      [1]
-      Position		      [925, 495, 985, 525]
-      VariableName	      "simout1"
-      MaxDataPoints	      "inf"
-      SampleTime	      "-1"
-      SaveFormat	      "Structure"
-    }
-    Block {
-      BlockType		      ToWorkspace
-      Name		      "To Workspace2"
-      SID		      183
-      Ports		      [1]
-      Position		      [940, 295, 1000, 325]
-      VariableName	      "simout2"
-      MaxDataPoints	      "inf"
-      SampleTime	      "-1"
-      SaveFormat	      "Structure"
-    }
-    Block {
-      BlockType		      Reference
+      BlockType		      SubSystem
       Name		      "UDP Socket Config"
-      SID		      192
+      SID		      82
       Ports		      [0, 3]
-      Position		      [30, 86, 110, 224]
+      Position		      [25, 36, 105, 174]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
-      SourceBlock	      "udp_library/UDP Socket Config"
-      SourceType	      ""
-      ShowPortLabels	      "FromPortIcon"
-      SystemSampleTime	      "-1"
+      InitFcn		      "updateAnnotation();"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
       FunctionWithSeparateData off
-      RTWMemSecFuncInitTerm   "Inherit from model"
-      RTWMemSecFuncExecute    "Inherit from model"
-      RTWMemSecDataConstants  "Inherit from model"
-      RTWMemSecDataInternal   "Inherit from model"
-      RTWMemSecDataParameters "Inherit from model"
-      server_ip		      "0"
-      server_port	      "0"
-      client_ip		      "0"
-      client_port	      "0"
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      MaskPromptString	      "Server IP|Server Port|Client IP|Client Port"
+      MaskStyleString	      "edit,edit,edit,edit"
+      MaskTunableValueString  "on,on,on,on"
+      MaskCallbackString      "|||"
+      MaskEnableString	      "on,on,on,on"
+      MaskVisibilityString    "on,on,on,on"
+      MaskToolTipString	      "on,on,on,on"
+      MaskVariables	      "server_ip=@1;server_port=@2;client_ip=@3;client_port=@4;"
+      MaskInitialization      "server_ip='127.0.0.1'\nserver_port=1001;\nclient_ip='127.0.0.1'\nclient_port=1002"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      "none"
+      MaskPortRotate	      "default"
+      MaskIconUnits	      "autoscale"
+      MaskValueString	      "0|0|0|0"
+      System {
+	Name			"UDP Socket Config"
+	Location		[514, 333, 812, 490]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  "UDP Socket Configuration"
+	  SID			  78
+	  Ports			  [0, 3]
+	  Position		  [25, 29, 170, 151]
+	  FunctionName		  "udp_config"
+	  Parameters		  "server_ip,server_port,client_ip,client_port"
+	  EnableBusSupport	  off
+	  MaskType		  "UDP Server / Client IP and Port Configuration"
+	  MaskDescription	  "UDP Socket Configuration"
+	  MaskHelp		  "Enter the server and client IP and port info.\nPlease enter server IP and client IP address in single "
+	  "quotes...\n\ne.g.\n'127.0.0.1'"
+	  MaskPromptString	  "Server IP|Server Port|Client IP|Client Port"
+	  MaskStyleString	  "edit,edit,edit,edit"
+	  MaskTunableValueString  "on,on,on,on"
+	  MaskCallbackString	  "|||"
+	  MaskEnableString	  "on,on,on,on"
+	  MaskVisibilityString	  "on,on,on,on"
+	  MaskToolTipString	  "on,on,on,on"
+	  MaskVariables		  "server_ip=@1;server_port=@2;client_ip=@3;client_port=@4;"
+	  MaskInitialization	  "server_ip='127.0.0.1'\nserver_port=1002\nclient_ip='127.0.0.1'\nclient_port=1001"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  on
+	  MaskIconRotate	  "none"
+	  MaskPortRotate	  "default"
+	  MaskIconUnits		  "autoscale"
+	  MaskValueString	  "0|0|0|0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "socket"
+	  SID			  83
+	  Position		  [260, 43, 290, 57]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "ipaddress"
+	  SID			  84
+	  Position		  [260, 83, 290, 97]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "status_out"
+	  SID			  85
+	  Position		  [260, 123, 290, 137]
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  SrcBlock		  "UDP Socket Configuration"
+	  SrcPort		  1
+	  DstBlock		  "socket"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "UDP Socket Configuration"
+	  SrcPort		  2
+	  DstBlock		  "ipaddress"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "UDP Socket Configuration"
+	  SrcPort		  3
+	  DstBlock		  "status_out"
+	  DstPort		  1
+	}
+      }
     }
     Block {
-      BlockType		      Reference
+      BlockType		      SubSystem
       Name		      "UDP Socket Receive"
-      SID		      194
+      SID		      121
       Ports		      [3, 3]
-      Position		      [700, 379, 820, 521]
+      Position		      [315, 34, 435, 176]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
-      SourceBlock	      "udp_library/UDP Socket Receive"
-      SourceType	      "SubSystem"
-      ShowPortLabels	      "FromPortIcon"
-      SystemSampleTime	      "-1"
+      InitFcn		      "updateAnnotation();"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
       FunctionWithSeparateData off
-      RTWMemSecFuncInitTerm   "Inherit from model"
-      RTWMemSecFuncExecute    "Inherit from model"
-      RTWMemSecDataConstants  "Inherit from model"
-      RTWMemSecDataInternal   "Inherit from model"
-      RTWMemSecDataParameters "Inherit from model"
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      System {
+	Name			"UDP Socket Receive"
+	Location		[1813, 407, 2128, 599]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "socket"
+	  SID			  122
+	  Position		  [25, 43, 55, 57]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "ipaddress"
+	  SID			  124
+	  Position		  [25, 88, 55, 102]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "status_in"
+	  SID			  126
+	  Position		  [25, 133, 55, 147]
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  "S-Function"
+	  SID			  114
+	  Ports			  [3, 3]
+	  Position		  [120, 25, 200, 165]
+	  FunctionName		  "udp_rx"
+	  EnableBusSupport	  off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "uint32rxBuffer"
+	  SID			  123
+	  Position		  [260, 43, 290, 57]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "numBytesRx"
+	  SID			  125
+	  Position		  [260, 88, 290, 102]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "status_out"
+	  SID			  127
+	  Position		  [260, 133, 290, 147]
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  SrcBlock		  "S-Function"
+	  SrcPort		  1
+	  DstBlock		  "uint32rxBuffer"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "S-Function"
+	  SrcPort		  2
+	  DstBlock		  "numBytesRx"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "S-Function"
+	  SrcPort		  3
+	  DstBlock		  "status_out"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "socket"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "ipaddress"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "status_in"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  3
+	}
+      }
     }
     Block {
-      BlockType		      Reference
+      BlockType		      SubSystem
       Name		      "UDP Socket Transmit"
-      SID		      193
+      SID		      107
       Ports		      [5, 1]
-      Position		      [415, 390, 500, 530]
+      Position		      [175, 35, 260, 175]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
-      SourceBlock	      "udp_library/UDP Socket Transmit"
-      SourceType	      "SubSystem"
-      ShowPortLabels	      "FromPortIcon"
-      SystemSampleTime	      "-1"
+      InitFcn		      "updateAnnotation();"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
       FunctionWithSeparateData off
-      RTWMemSecFuncInitTerm   "Inherit from model"
-      RTWMemSecFuncExecute    "Inherit from model"
-      RTWMemSecDataConstants  "Inherit from model"
-      RTWMemSecDataInternal   "Inherit from model"
-      RTWMemSecDataParameters "Inherit from model"
-    }
-    Line {
-      Name		      "input"
-      Labels		      [0, 0]
-      SrcBlock		      "Data Store\nRead"
-      SrcPort		      1
-      Points		      [55, 0; 0, 125; -100, 0; 0, 35; 15, 0; 0, 5]
-      DstBlock		      "UDP Socket Transmit"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "UDP Socket Config"
-      SrcPort		      1
-      Points		      [190, 0; 0, 5]
-      Branch {
-	Points			[15, 0]
-	DstBlock		"Data Store\nWrite1"
-	DstPort			1
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      System {
+	Name			"UDP Socket Transmit"
+	Location		[1983, 522, 2258, 704]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "uint32txBuffer"
+	  SID			  108
+	  Position		  [25, 33, 55, 47]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "numBytesTx"
+	  SID			  109
+	  Position		  [25, 58, 55, 72]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "socket"
+	  SID			  110
+	  Position		  [25, 83, 55, 97]
+	  Port			  "3"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "ipaddress"
+	  SID			  112
+	  Position		  [25, 108, 55, 122]
+	  Port			  "4"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "status_in"
+	  SID			  113
+	  Position		  [25, 133, 55, 147]
+	  Port			  "5"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  "S-Function"
+	  SID			  86
+	  Ports			  [5, 1]
+	  Position		  [125, 25, 165, 155]
+	  FunctionName		  "udp_tx"
+	  EnableBusSupport	  off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "status_out"
+	  SID			  111
+	  Position		  [220, 83, 250, 97]
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	}
+	Line {
+	  SrcBlock		  "status_in"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  5
+	}
+	Line {
+	  SrcBlock		  "ipaddress"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  4
+	}
+	Line {
+	  SrcBlock		  "socket"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "numBytesTx"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "uint32txBuffer"
+	  SrcPort		  1
+	  DstBlock		  "S-Function"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "S-Function"
+	  SrcPort		  1
+	  DstBlock		  "status_out"
+	  DstPort		  1
+	}
       }
-      Branch {
-	Points			[0, 350; 90, 0; 0, -5]
-	DstBlock		"UDP Socket Transmit"
-	DstPort			3
-      }
-    }
-    Line {
-      SrcBlock		      "UDP Socket Config"
-      SrcPort		      3
-      Points		      [30, 0; 0, 155; -115, 0; 0, 180]
-      Branch {
-	DstBlock		"Data Store\nWrite2"
-	DstPort			1
-      }
-      Branch {
-	Points			[0, 15; 365, 0; 0, -30]
-	DstBlock		"UDP Socket Transmit"
-	DstPort			5
-      }
-    }
-    Line {
-      SrcBlock		      "UDP Socket Config"
-      SrcPort		      2
-      Points		      [55, 0]
-      Branch {
-	DstBlock		"Data Store\nWrite3"
-	DstPort			1
-      }
-      Branch {
-	Points			[0, 345; 225, 0; 0, -10]
-	DstBlock		"UDP Socket Transmit"
-	DstPort			4
-      }
-    }
-    Line {
-      SrcBlock		      "Constant1"
-      SrcPort		      1
-      DstBlock		      "UDP Socket Transmit"
-      DstPort		      2
-    }
-    Line {
-      SrcBlock		      "UDP Socket Transmit"
-      SrcPort		      1
-      Points		      [0, 5; 80, 0; 0, 35; 100, 0]
-      DstBlock		      "UDP Socket Receive"
-      DstPort		      3
-    }
-    Line {
-      SrcBlock		      "Data Store\nRead1"
-      SrcPort		      1
-      Points		      [0, 115; 65, 0]
-      DstBlock		      "UDP Socket Receive"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "Data Store\nRead2"
-      SrcPort		      1
-      Points		      [5, 0; 0, 105]
-      DstBlock		      "UDP Socket Receive"
-      DstPort		      2
-    }
-    Line {
-      SrcBlock		      "UDP Socket Receive"
-      SrcPort		      1
-      Points		      [70, 0; 0, -15; 10, 0]
-      Branch {
-	DstBlock		"Data Store\nWrite"
-	DstPort			1
-      }
-      Branch {
-	Points			[0, -80]
-	DstBlock		"To Workspace2"
-	DstPort			1
-      }
-    }
-    Line {
-      SrcBlock		      "UDP Socket Receive"
-      SrcPort		      3
-      Points		      [70, 0; 0, 15]
-      DstBlock		      "To Workspace1"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "UDP Socket Receive"
-      SrcPort		      2
-      DstBlock		      "To Workspace"
-      DstPort		      1
     }
   }
 }

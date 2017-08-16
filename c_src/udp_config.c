@@ -1,5 +1,5 @@
 /*
- * File: udp_tx_rx.c
+ * File: udp_config.c
  *
  *
   *
@@ -32,70 +32,16 @@
  */
 
 #define S_FUNCTION_LEVEL 2
-#define S_FUNCTION_NAME udp_tx_rx
+#define S_FUNCTION_NAME udp_config
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 /* %%%-SFUNWIZ_defines_Changes_BEGIN --- EDIT HERE TO _END */
 
-#define NUM_INPUTS          3
+#define NUM_INPUTS          0
 
-/* Tx data in uint32  0 */
-#define IN_PORT_0_NAME      uint32TxData
-#define INPUT_0_WIDTH       1
-#define INPUT_DIMS_0_COL    1
-#define INPUT_0_DTYPE       uint32_T
-#define INPUT_0_COMPLEX     COMPLEX_NO
-#define IN_0_FRAME_BASED    FRAME_NO
-#define IN_0_BUS_BASED      0
-#define IN_0_BUS_NAME       
-#define IN_0_DIMS           1-D
-#define INPUT_0_FEEDTHROUGH 1
-#define IN_0_ISSIGNED        0
-#define IN_0_WORDLENGTH      8
-#define IN_0_FIXPOINTSCALING 1
-#define IN_0_FRACTIONLENGTH  9
-#define IN_0_BIAS            0
-#define IN_0_SLOPE           0.125
+#define NUM_OUTPUTS          3
 
-/* messageSize in bytes*/
-#define IN_PORT_1_NAME      txMessageSize
-#define INPUT_1_WIDTH       1
-#define INPUT_DIMS_1_COL    1
-#define INPUT_1_DTYPE       uint32_T
-#define INPUT_1_COMPLEX     COMPLEX_NO
-#define IN_1_FRAME_BASED    FRAME_NO
-#define IN_1_BUS_BASED      0
-#define IN_1_BUS_NAME       
-#define IN_1_DIMS           1-D
-#define INPUT_1_FEEDTHROUGH 1
-#define IN_1_ISSIGNED        0
-#define IN_1_WORDLENGTH      8
-#define IN_1_FIXPOINTSCALING 1
-#define IN_1_FRACTIONLENGTH  9
-#define IN_1_BIAS            0
-#define IN_1_SLOPE           0.125
-
-/* tx_enable */
-#define IN_PORT_2_NAME      txEnable
-#define INPUT_2_WIDTH       1
-#define INPUT_DIMS_2_COL    1
-#define INPUT_2_DTYPE       uint8_T
-#define INPUT_2_COMPLEX     COMPLEX_NO
-#define IN_2_FRAME_BASED    FRAME_NO
-#define IN_2_BUS_BASED      0
-#define IN_2_BUS_NAME       
-#define IN_2_DIMS           1-D
-#define INPUT_2_FEEDTHROUGH 1
-#define IN_2_ISSIGNED        0
-#define IN_2_WORDLENGTH      8
-#define IN_2_FIXPOINTSCALING 1
-#define IN_2_FRACTIONLENGTH  9
-#define IN_2_BIAS            0
-#define IN_2_SLOPE           0.125
-
-#define NUM_OUTPUTS          4
-
-/* uint32RxData */
-#define OUT_PORT_0_NAME      uint32RxData
+/* socket descriptor */
+#define OUT_PORT_0_NAME      uint32SocketDescriptor
 #define OUTPUT_0_WIDTH       1
 #define OUTPUT_DIMS_0_COL    1
 #define OUTPUT_0_DTYPE       uint32_T
@@ -111,8 +57,8 @@
 #define OUT_0_BIAS            0
 #define OUT_0_SLOPE           0.125
 
-/* rxMessageSize */
-#define OUT_PORT_1_NAME      rxMessageSize
+/* Destination address */
+#define OUT_PORT_1_NAME      uint32DestinationAddress
 #define OUTPUT_1_WIDTH       1
 #define OUTPUT_DIMS_1_COL    1
 #define OUTPUT_1_DTYPE       uint32_T
@@ -128,11 +74,11 @@
 #define OUT_1_BIAS            0
 #define OUT_1_SLOPE           0.125
 
-/* rxInterrupt */
-#define OUT_PORT_2_NAME      rxInterrupt
+/* Socket status */
+#define OUT_PORT_2_NAME      int32SocketStatus
 #define OUTPUT_2_WIDTH       1
 #define OUTPUT_DIMS_2_COL    1
-#define OUTPUT_2_DTYPE       uint8_T
+#define OUTPUT_2_DTYPE       int32_T
 #define OUTPUT_2_COMPLEX     COMPLEX_NO
 #define OUT_2_FRAME_BASED    FRAME_NO
 #define OUT_2_BUS_BASED      0
@@ -144,23 +90,6 @@
 #define OUT_2_FRACTIONLENGTH  3
 #define OUT_2_BIAS            0
 #define OUT_2_SLOPE           0.125
-
-/* rxStatus */
-#define OUT_PORT_3_NAME      rxStatus
-#define OUTPUT_3_WIDTH       1
-#define OUTPUT_DIMS_3_COL    1
-#define OUTPUT_3_DTYPE       uint8_T
-#define OUTPUT_3_COMPLEX     COMPLEX_NO
-#define OUT_3_FRAME_BASED    FRAME_NO
-#define OUT_3_BUS_BASED      0
-#define OUT_3_BUS_NAME       
-#define OUT_3_DIMS           1-D
-#define OUT_3_ISSIGNED        1
-#define OUT_3_WORDLENGTH      8
-#define OUT_3_FIXPOINTSCALING 1
-#define OUT_3_FRACTIONLENGTH  3
-#define OUT_3_BIAS            0
-#define OUT_3_SLOPE           0.125
 
 #define NPARAMS              4
 
@@ -189,11 +118,7 @@
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 #include "simstruc.h"
 
-// Global variables for TCP/IP
-
-#define SERVER_PORT 15001 //Changeable
-#define CLIENT_PORT 15002 //Changeable
-
+// Global variables for UDP
 #define IP_ADDR_BUF_SIZE        64
 
 char client_ip[IP_ADDR_BUF_SIZE];
@@ -207,21 +132,7 @@ SOCKET client_socket;
 struct sockaddr_in server_addr;
 struct sockaddr_in client_addr;
 
-#define MAX_BUF_SIZE        1024
-#define MAX_UINT32_BUF_SIZE        (MAX_BUF_SIZE / 4)
-
-/* UINT32 to UINT8 conversion */
-typedef struct
-{
-	union
-	{
-		uint8_T     uint8_buffer[MAX_BUF_SIZE];
-		uint32_T    uint32_buffer[MAX_UINT32_BUF_SIZE];
-	};
-} udp_buffers_T;
-
-udp_buffers_T   udp_tx_buffers;
-udp_buffers_T   udp_rx_buffers;
+int status;
 
 WSADATA wsa_data;
 
@@ -247,28 +158,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumDiscStates(S, NUM_DISC_STATES);
 
     if (!ssSetNumInputPorts(S, NUM_INPUTS)) return;
-    ssSetInputPortWidth(S, 0, DYNAMICALLY_SIZED);
-    ssSetInputPortDataType(S, 0, SS_UINT32);
-    ssSetInputPortComplexSignal(S, 0, INPUT_0_COMPLEX);
-    ssSetInputPortDirectFeedThrough(S, 0, INPUT_0_FEEDTHROUGH);
-    ssSetInputPortRequiredContiguous(S, 0, 1); /*direct input signal access*/
-
-    ssSetInputPortWidth(S, 1, INPUT_1_WIDTH);
-    ssSetInputPortDataType(S, 1, SS_UINT32);
-    ssSetInputPortComplexSignal(S, 1, INPUT_1_COMPLEX);
-    ssSetInputPortDirectFeedThrough(S, 1, INPUT_1_FEEDTHROUGH);
-    ssSetInputPortRequiredContiguous(S, 1, 1); /*direct input signal access*/
-
-    ssSetInputPortWidth(S, 2, INPUT_2_WIDTH);
-    ssSetInputPortDataType(S, 2, SS_UINT8);
-    ssSetInputPortComplexSignal(S, 2, INPUT_2_COMPLEX);
-    ssSetInputPortDirectFeedThrough(S, 2, INPUT_2_FEEDTHROUGH);
-    ssSetInputPortRequiredContiguous(S, 2, 1); /*direct input signal access*/
 
     if (!ssSetNumOutputPorts(S, NUM_OUTPUTS)) return;
 
     /* Output Port 0 */
-	ssSetOutputPortWidth(S, 0, DYNAMICALLY_SIZED);
+	ssSetOutputPortWidth(S, 0, OUTPUT_0_WIDTH);
     ssSetOutputPortDataType(S, 0, SS_UINT32);
     ssSetOutputPortComplexSignal(S, 0, OUTPUT_0_COMPLEX);
 
@@ -277,17 +171,12 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOutputPortDataType(S, 1, SS_UINT32);
     ssSetOutputPortComplexSignal(S, 1, OUTPUT_1_COMPLEX);
 
-        /* interrupt */
+    /* Output Port 2 */
 	ssSetOutputPortWidth(S, 2, OUTPUT_2_WIDTH);
-    ssSetOutputPortDataType(S, 2, SS_UINT8);
+    ssSetOutputPortDataType(S, 2, SS_INT32);
     ssSetOutputPortComplexSignal(S, 2, OUTPUT_2_COMPLEX);
 
-        /* rx status */
-	ssSetOutputPortWidth(S, 3, OUTPUT_3_WIDTH);
-    ssSetOutputPortDataType(S, 3, SS_UINT8);
-    ssSetOutputPortComplexSignal(S, 3, OUTPUT_3_COMPLEX);
-    
-    ssSetNumSampleTimes(S, 1);
+	ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
     ssSetNumIWork(S, 0);
     ssSetNumPWork(S, 0);
@@ -339,6 +228,7 @@ static void mdlSetOutputPortDataType(SimStruct *S, int port, DTypeId dType)
   static void mdlStart(SimStruct *S)
   {
 	unsigned long int nonBlockingMode = 1;
+	status = 0;
 
     WSAStartup(MAKEWORD(2,0), &wsa_data);
     mxGetString(ssGetSFcnParam(S, 0),client_ip,64);
@@ -350,7 +240,7 @@ static void mdlSetOutputPortDataType(SimStruct *S, int port, DTypeId dType)
 	memset( &client_addr, 0, sizeof(client_addr));
 	client_addr.sin_family = AF_INET;
 	client_addr.sin_port = htons(client_port);
-	client_addr.sin_addr.s_addr = INADDR_ANY;   //inet_addr(destination);
+	client_addr.sin_addr.s_addr = inet_addr(client_ip);		//INADDR_ANY;   //inet_addr(destination);
 
 	// Set the structure of server
 	memset( &server_addr, 0, sizeof(server_addr));
@@ -361,9 +251,8 @@ static void mdlSetOutputPortDataType(SimStruct *S, int port, DTypeId dType)
     // Create a socket
 	client_socket = socket( AF_INET, SOCK_DGRAM, 0);
 
-	if (bind(client_socket,(LPSOCKADDR)&client_addr,sizeof(struct sockaddr))<0)
-	{/*bind a client address and port*/
-     fprintf(stderr,"bind failed\n");
+	if (bind(client_socket,(LPSOCKADDR)&client_addr,sizeof(struct sockaddr))<0) {/*bind a client address and port*/
+		status = WSAGetLastError();
    }
 
    ioctlsocket( client_socket, FIONBIO, &nonBlockingMode );
@@ -375,68 +264,13 @@ static void mdlSetOutputPortDataType(SimStruct *S, int port, DTypeId dType)
 */
 static void mdlOutputs(SimStruct *S, int_T tid)
 {
-	const uint32_T   *uint32TxData  = (const uint32_T*) ssGetInputPortSignal(S,0);
-	int32_T              nuint32TxData    = ssGetInputPortWidth(S,0);
-    const uint32_T   *txMessageSize  = (const uint32_T*) ssGetInputPortSignal(S,1);
-    const uint8_T    *txEnable  = (const uint8_T*) ssGetInputPortSignal(S,2);
-    
-	uint32_T      *uint32RxData     = (uint32_T *)ssGetOutputPortSignal(S,0);	//real_T        *y0  = (real_T *)ssGetOutputPortRealSignal(S,0);
-	int32_T         nuint32RxData    = ssGetOutputPortWidth(S,0);
-	uint32_T      *rxMessageSize     = (uint32_T *)ssGetOutputPortSignal(S,1);	//real_T        *y0  = (real_T *)ssGetOutputPortRealSignal(S,0);
-	uint8_T      *rxInterrupt      = (uint8_T *)ssGetOutputPortSignal(S,2);	//real_T        *y0  = (real_T *)ssGetOutputPortRealSignal(S,0);
-	uint8_T      *rxStatus         = (uint8_T *)ssGetOutputPortSignal(S,3);	//real_T        *y0  = (real_T *)ssGetOutputPortRealSignal(S,0);
+	uint32_T	*puint32SocketDescriptor     = (uint32_T *)ssGetOutputPortSignal(S,0);
+	uint32_T	*uint32DestinationAddress = (uint32_T *)ssGetOutputPortSignal(S,1);
+	int32_T     *pint32SocketStatus     = (int32_T *)ssGetOutputPortSignal(S,2);
 
-    int i, recv_bytes;
-    static int previous_count = 0;
-	int len = sizeof(struct sockaddr);
-  
-    if ((*txMessageSize > MAX_BUF_SIZE) ||(*txMessageSize < 4))
-    {
-        rxStatus[0] = 0;
-    }
-    else
-    {
-      if (*txEnable > 0)	// process transmit if needed
-      {
-		  for (i = 0; i < nuint32TxData; i++)
-		  {
-              udp_tx_buffers.uint32_buffer[i] = uint32TxData[i];
-		  }
-		  
-		  sendto(	client_socket,
-		  			  	&udp_tx_buffers.uint8_buffer[0],
-		  			  	nuint32TxData * 4,	// sizeof(buffer),
-		  			  	0,
-		  			  	(LPSOCKADDR)&server_addr,
-		  			  	sizeof(struct sockaddr));
-      }
-    }
-
-      // process receive - non blocking
-	recv_bytes = recvfrom(client_socket,
-							&udp_rx_buffers.uint8_buffer[0],
-							sizeof(udp_rx_buffers.uint8_buffer),
-							0,
-							(LPSOCKADDR)&server_addr,
-							&len);
-
-	if (recv_bytes > 0)
-	{
-		for (i = 0; (i < (recv_bytes / 4)) && (i < nuint32RxData); i++)
-		{
-			uint32RxData[i] = udp_rx_buffers.uint32_buffer[i];
-		}
-
-		rxMessageSize[0] = recv_bytes; 	// send rx bytes
-		
-		rxInterrupt[0] = 1;				//send rx interrupt signal
-		rxStatus[0] = 1;				// 1 == success
-	}
-	else
-	{
-		rxInterrupt[0] = 0;
-		rxStatus[0] = 0;				// 0 == error
-	}
+	puint32SocketDescriptor[0] = (uint32_T) client_socket;
+	uint32DestinationAddress[0] = (uint32_T) &server_addr;
+	pint32SocketStatus[0] = status;
 }
 
 
@@ -450,7 +284,6 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 static void mdlTerminate(SimStruct *S)
 {
 	closesocket(client_socket);
-
 	WSACleanup();
 }
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */

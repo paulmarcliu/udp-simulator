@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.103"
+    ComputedModelVersion    "1.107"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -25,9 +25,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "paul.liu"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Aug 16 15:27:50 2017"
-  RTWModifiedTimeStamp	  424798066
-  ModelVersionFormat	  "1.%<AutoIncrement:103>"
+  LastModifiedDate	  "Mon Aug 21 15:57:49 2017"
+  RTWModifiedTimeStamp	  425231839
+  ModelVersionFormat	  "1.%<AutoIncrement:107>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -629,7 +629,7 @@ Model {
   }
   System {
     Name		    "udptest"
-    Location		    [46, 121, 1314, 718]
+    Location		    [2630, 74, 3898, 671]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -643,7 +643,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    194
+    SIDHighWatermark	    196
     Block {
       BlockType		      Constant
       Name		      "Constant1"
@@ -831,11 +831,20 @@ Model {
     Block {
       BlockType		      Reference
       Name		      "UDP Socket Config"
-      SID		      192
+      SID		      196
       Ports		      [0, 3]
-      Position		      [30, 86, 110, 224]
+      Position		      [25, 86, 105, 224]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
+      LibraryVersion	      "1.29"
+      LinkData {
+	BlockName		"UDP Socket Configuration"
+	DialogParameters {
+	  server_ip		  "'127.0.0.1'"
+	  server_port		  "1002"
+	  client_ip		  "'127.0.0.1'"
+	  client_port		  "1001"
+	}
+      }
       SourceBlock	      "udp_library/UDP Socket Config"
       SourceType	      ""
       ShowPortLabels	      "FromPortIcon"
@@ -846,10 +855,10 @@ Model {
       RTWMemSecDataConstants  "Inherit from model"
       RTWMemSecDataInternal   "Inherit from model"
       RTWMemSecDataParameters "Inherit from model"
-      server_ip		      "0"
-      server_port	      "0"
-      client_ip		      "0"
-      client_port	      "0"
+      server_ip		      "'127.0.0.1'"
+      server_port	      "1002"
+      client_ip		      "'127.0.0.1'"
+      client_port	      "1001"
     }
     Block {
       BlockType		      Reference
@@ -858,7 +867,7 @@ Model {
       Ports		      [3, 3]
       Position		      [700, 379, 820, 521]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
+      LibraryVersion	      "1.29"
       SourceBlock	      "udp_library/UDP Socket Receive"
       SourceType	      "SubSystem"
       ShowPortLabels	      "FromPortIcon"
@@ -877,7 +886,7 @@ Model {
       Ports		      [5, 1]
       Position		      [415, 390, 500, 530]
       AttributesFormatString  "Ver 1.0"
-      LibraryVersion	      "1.27"
+      LibraryVersion	      "1.29"
       SourceBlock	      "udp_library/UDP Socket Transmit"
       SourceType	      "SubSystem"
       ShowPortLabels	      "FromPortIcon"
@@ -901,7 +910,7 @@ Model {
     Line {
       SrcBlock		      "UDP Socket Config"
       SrcPort		      1
-      Points		      [190, 0; 0, 5]
+      Points		      [195, 0; 0, 5]
       Branch {
 	Points			[15, 0]
 	DstBlock		"Data Store\nWrite1"
@@ -916,7 +925,7 @@ Model {
     Line {
       SrcBlock		      "UDP Socket Config"
       SrcPort		      3
-      Points		      [30, 0; 0, 155; -115, 0; 0, 180]
+      Points		      [35, 0; 0, 155; -115, 0; 0, 180]
       Branch {
 	DstBlock		"Data Store\nWrite2"
 	DstPort			1
@@ -930,7 +939,7 @@ Model {
     Line {
       SrcBlock		      "UDP Socket Config"
       SrcPort		      2
-      Points		      [55, 0]
+      Points		      [60, 0]
       Branch {
 	DstBlock		"Data Store\nWrite3"
 	DstPort			1

@@ -16,9 +16,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "paul.liu"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Aug 16 14:36:53 2017"
-  RTWModifiedTimeStamp	  424795006
-  ModelVersionFormat	  "1.%<AutoIncrement:27>"
+  LastModifiedDate	  "Mon Aug 21 16:28:10 2017"
+  RTWModifiedTimeStamp	  425233612
+  ModelVersionFormat	  "1.%<AutoIncrement:30>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -644,7 +644,7 @@ Library {
   }
   System {
     Name		    "udp_library"
-    Location		    [1968, 210, 2514, 460]
+    Location		    [1346, -412, 3902, 892]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -658,7 +658,7 @@ Library {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    127
+    SIDHighWatermark	    135
     Block {
       BlockType		      SubSystem
       Name		      "UDP Socket Config"
@@ -682,16 +682,15 @@ Library {
       MaskVisibilityString    "on,on,on,on"
       MaskToolTipString	      "on,on,on,on"
       MaskVariables	      "server_ip=@1;server_port=@2;client_ip=@3;client_port=@4;"
-      MaskInitialization      "server_ip='127.0.0.1'\nserver_port=1001;\nclient_ip='127.0.0.1'\nclient_port=1002"
       MaskIconFrame	      on
       MaskIconOpaque	      on
       MaskIconRotate	      "none"
       MaskPortRotate	      "default"
       MaskIconUnits	      "autoscale"
-      MaskValueString	      "0|0|0|0"
+      MaskValueString	      "'127.0.0.1'|1002|'127.0.0.1'|1001"
       System {
 	Name			"UDP Socket Config"
-	Location		[514, 333, 812, 490]
+	Location		[514, 333, 1012, 666]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -707,37 +706,24 @@ Library {
 	Block {
 	  BlockType		  "S-Function"
 	  Name			  "UDP Socket Configuration"
-	  SID			  78
+	  SID			  132
 	  Ports			  [0, 3]
-	  Position		  [25, 29, 170, 151]
+	  Position		  [190, 85, 265, 265]
 	  FunctionName		  "udp_config"
 	  Parameters		  "server_ip,server_port,client_ip,client_port"
 	  EnableBusSupport	  off
-	  MaskType		  "UDP Server / Client IP and Port Configuration"
-	  MaskDescription	  "UDP Socket Configuration"
-	  MaskHelp		  "Enter the server and client IP and port info.\nPlease enter server IP and client IP address in single "
-	  "quotes...\n\ne.g.\n'127.0.0.1'"
-	  MaskPromptString	  "Server IP|Server Port|Client IP|Client Port"
-	  MaskStyleString	  "edit,edit,edit,edit"
-	  MaskTunableValueString  "on,on,on,on"
-	  MaskCallbackString	  "|||"
-	  MaskEnableString	  "on,on,on,on"
-	  MaskVisibilityString	  "on,on,on,on"
-	  MaskToolTipString	  "on,on,on,on"
-	  MaskVariables		  "server_ip=@1;server_port=@2;client_ip=@3;client_port=@4;"
-	  MaskInitialization	  "server_ip='127.0.0.1'\nserver_port=1002\nclient_ip='127.0.0.1'\nclient_port=1001"
-	  MaskIconFrame		  on
-	  MaskIconOpaque	  on
-	  MaskIconRotate	  "none"
-	  MaskPortRotate	  "default"
-	  MaskIconUnits		  "autoscale"
-	  MaskValueString	  "0|0|0|0"
+	  Port {
+	    PortNumber		    1
+	    Name		    "socket"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
 	}
 	Block {
 	  BlockType		  Outport
 	  Name			  "socket"
-	  SID			  83
-	  Position		  [260, 43, 290, 57]
+	  SID			  133
+	  Position		  [340, 108, 370, 122]
 	  IconDisplay		  "Port number"
 	  OutDataType		  "fixdt(1, 16)"
 	  OutScaling		  "2^0"
@@ -745,8 +731,8 @@ Library {
 	Block {
 	  BlockType		  Outport
 	  Name			  "ipaddress"
-	  SID			  84
-	  Position		  [260, 83, 290, 97]
+	  SID			  134
+	  Position		  [340, 168, 370, 182]
 	  Port			  "2"
 	  IconDisplay		  "Port number"
 	  OutDataType		  "fixdt(1, 16)"
@@ -755,14 +741,16 @@ Library {
 	Block {
 	  BlockType		  Outport
 	  Name			  "status_out"
-	  SID			  85
-	  Position		  [260, 123, 290, 137]
+	  SID			  135
+	  Position		  [340, 228, 370, 242]
 	  Port			  "3"
 	  IconDisplay		  "Port number"
 	  OutDataType		  "fixdt(1, 16)"
 	  OutScaling		  "2^0"
 	}
 	Line {
+	  Name			  "socket"
+	  Labels		  [0, 0; 0, 0]
 	  SrcBlock		  "UDP Socket Configuration"
 	  SrcPort		  1
 	  DstBlock		  "socket"
